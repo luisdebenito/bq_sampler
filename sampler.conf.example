@@ -1,0 +1,21 @@
+# copia este fichero a sampler.conf y ajusta lo que quieras
+# entrada: keyboard o midi
+input = keyboard
+
+# solo con input = midi. formato tipo:canal:numero, tipo note o cc
+# midi_port   = nanoKONTROL2
+# midi_next   = cc:1:44
+# midi_prev   = cc:1:43
+# midi_toggle = note:1:60
+# midi_quit   = cc:1:46
+
+prev   = left
+next   = right
+toggle = space
+quit   = q
+
+# duracion de las rampas anti-click, en milisegundos
+ramp_ms = 2
+
+# medio periodo del parpadeo, en milisegundos
+blink_ms = 250
