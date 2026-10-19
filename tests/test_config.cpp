@@ -6,11 +6,12 @@
 
 using sampler::Action;
 
-TEST_CASE("default config binds the three keys plus quit") {
+TEST_CASE("default config binds the four keys plus quit") {
     auto c = sampler::defaultConfig();
     CHECK(c.keys.at(Action::Prev).name == "left");
     CHECK(c.keys.at(Action::Next).name == "right");
     CHECK(c.keys.at(Action::Toggle).name == "space");
+    CHECK(c.keys.at(Action::Jump).name == "enter");
     CHECK(c.keys.at(Action::Quit).name == "q");
     CHECK(c.rampMs == sampler::kDefaultRampMs);
     CHECK(c.blinkMs == sampler::kDefaultBlinkMs);

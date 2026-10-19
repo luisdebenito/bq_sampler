@@ -11,7 +11,7 @@ constexpr const char* kNano = "nano:nano MIDI 1 20:0";
 constexpr const char* kPad = "Launchpad:Launchpad MIDI 1 24:0";
 }
 
-TEST_CASE("keys are asked in the order next, prev, toggle, quit") {
+TEST_CASE("keys are asked in the order next, prev, toggle, jump, quit") {
     SetupLearner learner(InputMode::Keyboard);
     CHECK(learner.current() == Action::Next);
     CHECK(learner.offerKey("\x1b[C") == LearnResult::Accepted);
@@ -19,6 +19,8 @@ TEST_CASE("keys are asked in the order next, prev, toggle, quit") {
     CHECK(learner.offerKey("\x1b[D") == LearnResult::Accepted);
     CHECK(learner.current() == Action::Toggle);
     CHECK(learner.offerKey(" ") == LearnResult::Accepted);
+    CHECK(learner.current() == Action::Jump);
+    CHECK(learner.offerKey("\r") == LearnResult::Accepted);
     CHECK(learner.current() == Action::Quit);
     CHECK_FALSE(learner.done());
     CHECK(learner.offerKey("x") == LearnResult::Accepted);
@@ -29,6 +31,7 @@ TEST_CASE("keys are asked in the order next, prev, toggle, quit") {
     CHECK(c.keys.at(Action::Next).name == "right");
     CHECK(c.keys.at(Action::Prev).name == "left");
     CHECK(c.keys.at(Action::Toggle).name == "space");
+    CHECK(c.keys.at(Action::Jump).name == "enter");
     CHECK(c.keys.at(Action::Quit).bytes == "x");
 }
 
@@ -80,6 +83,7 @@ TEST_CASE("a finished midi setup keeps the device without the alsa suffix and th
     learner.offerMidi(kNano, {0xB0, 44, 127});
     learner.offerMidi(kNano, {0xB0, 43, 127});
     learner.offerMidi(kNano, {0x90, 60, 100});
+    learner.offerMidi(kNano, {0x90, 61, 100});
     learner.offerMidi(kNano, {0xB0, 46, 127});
     REQUIRE(learner.done());
 
@@ -87,7 +91,7 @@ TEST_CASE("a finished midi setup keeps the device without the alsa suffix and th
     const sampler::MidiBinding toggle{sampler::MidiKind::Note, 1, 60};
     CHECK(c.input == InputMode::Midi);
     CHECK(c.midiPort == "nano:nano MIDI 1");
-    CHECK(c.midi.size() == 4);
+    CHECK(c.midi.size() == 5);
     CHECK(c.midi.at(Action::Toggle) == toggle);
     CHECK(c.keys.at(Action::Next).name == "right");
 }

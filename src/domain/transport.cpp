@@ -19,6 +19,10 @@ void Transport::toggle() {
                          std::memory_order_release);
 }
 
+void Transport::jump() {
+    jumpRequested_.store(true, std::memory_order_release);
+}
+
 bool Transport::isPlaying() const {
     return playRequested_.load(std::memory_order_relaxed);
 }
@@ -50,13 +54,17 @@ void Transport::advanceGain() {
 void Transport::render(float* out, uint32_t frames, const SampleLibrary& lib) {
     const uint32_t outSamples = frames * kChannels;
     const bool play = playRequested_.load(std::memory_order_acquire);
+    const bool jump = jumpRequested_.exchange(false, std::memory_order_acquire);
 
     if (play && !prevPlay_) {
         cur_ = armedIndex_.load(std::memory_order_acquire);
         pos_ = 0;
         beginFade(1.0f);
     } else if (!play && prevPlay_) {
+        cutAt_ = kNoCut;
         beginFade(0.0f);
+    } else if (play && jump) {
+        cutAt_ = pos_ + rampFrames_;
     }
     prevPlay_ = play;
 
@@ -72,21 +80,22 @@ void Transport::render(float* out, uint32_t frames, const SampleLibrary& lib) {
 
     for (uint32_t i = 0; i < frames; ++i) {
         const Sample& cs = lib.samples[static_cast<size_t>(cur_)];
-        if (pos_ >= cs.frameCount) {
+        if (pos_ >= std::min(cs.frameCount, cutAt_)) {
             const int next = armedIndex_.load(std::memory_order_acquire);
-            if (next != cur_) {
+            if (next != cur_ || cutAt_ != kNoCut) {
                 cur_ = next;
                 beginFade(1.0f);
             }
+            cutAt_ = kNoCut;
             pos_ = 0;
         }
 
         const Sample& s = lib.samples[static_cast<size_t>(cur_)];
         if (play && rampFrames_ > 0) {
-            const uint64_t fadeOutStart =
-                s.frameCount > rampFrames_ ? s.frameCount - rampFrames_ : 0;
-            const bool switching =
-                armedIndex_.load(std::memory_order_acquire) != cur_;
+            const uint64_t end = std::min(s.frameCount, cutAt_);
+            const uint64_t fadeOutStart = end > rampFrames_ ? end - rampFrames_ : 0;
+            const bool switching = cutAt_ != kNoCut ||
+                                   armedIndex_.load(std::memory_order_acquire) != cur_;
             const float target = (switching && pos_ >= fadeOutStart) ? 0.0f : 1.0f;
             if (target != gainTarget_) beginFade(target);
         }

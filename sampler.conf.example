@@ -7,11 +7,13 @@ input = keyboard
 # midi_next   = cc:1:44
 # midi_prev   = cc:1:43
 # midi_toggle = note:1:60
+# midi_jump   = note:1:61
 # midi_quit   = cc:1:46
 
 prev   = left
 next   = right
 toggle = space
+jump   = enter
 quit   = q
 
 # duracion de las rampas anti-click, en milisegundos

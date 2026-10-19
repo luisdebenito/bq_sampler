@@ -87,3 +87,39 @@ TEST_CASE("stepping with a single sample stays at index 0") {
     t.render(out, 3, lib);
     CHECK(out[4] == doctest::Approx(0.100f));
 }
+
+TEST_CASE("jump switches to the armed sample without waiting for the loop end") {
+    auto lib = makeLib({5, 3});
+    Transport t(2, 0);
+    t.toggle();
+    float out[2 * kChannels];
+    t.render(out, 1, lib);
+    t.step(+1);
+    t.jump();
+    t.render(out, 2, lib);
+    CHECK(out[0] == doctest::Approx(0.200f));
+    CHECK(out[2] == doctest::Approx(0.201f));
+}
+
+TEST_CASE("jump with nothing else armed restarts the current sample") {
+    auto lib = makeLib({5});
+    Transport t(1, 0);
+    t.toggle();
+    float out[3 * kChannels];
+    t.render(out, 3, lib);
+    t.jump();
+    t.render(out, 1, lib);
+    CHECK(out[0] == doctest::Approx(0.100f));
+}
+
+TEST_CASE("jump while stopped does nothing to the next play") {
+    auto lib = makeLib({4, 4});
+    Transport t(2, 0);
+    t.jump();
+    float out[3 * kChannels];
+    t.render(out, 1, lib);
+    t.toggle();
+    t.render(out, 3, lib);
+    CHECK(out[0] == doctest::Approx(0.100f));
+    CHECK(out[4] == doctest::Approx(0.102f));
+}

@@ -96,3 +96,33 @@ TEST_CASE("cancelling a pending switch restores the gain instead of going silent
     t.render(out, 8, lib);
     CHECK(out[14] == doctest::Approx(0.105f));
 }
+
+TEST_CASE("jump fades out the old sample before starting the new one") {
+    auto lib = makeLib({8, 8});
+    Transport t(2, 2);
+    t.toggle();
+    float out[4 * kChannels];
+    t.render(out, 4, lib);
+    t.step(+1);
+    t.jump();
+    t.render(out, 4, lib);
+    CHECK(out[0] == doctest::Approx(0.104f * 0.5f));
+    CHECK(out[2] == doctest::Approx(0.0f));
+    CHECK(out[4] == doctest::Approx(0.200f * 0.5f));
+    CHECK(out[6] == doctest::Approx(0.201f));
+}
+
+TEST_CASE("stopping in the middle of a jump stays stopped") {
+    auto lib = makeLib({16, 16});
+    Transport t(2, 2);
+    t.toggle();
+    float out[8 * kChannels];
+    t.render(out, 4, lib);
+    t.step(+1);
+    t.jump();
+    t.render(out, 1, lib);
+    t.toggle();
+    t.render(out, 8, lib);
+    t.render(out, 4, lib);
+    for (uint32_t i = 0; i < 4 * kChannels; ++i) CHECK(out[i] == 0.0f);
+}

@@ -20,7 +20,7 @@ de ALSA:
 
 La primera vez, si no existe el config, el programa pregunta si vas a usar
 teclado o MIDI y te pide pulsar lo que quieras para cada acción: siguiente,
-anterior, play/stop y salir. Lo guarda en `sampler.conf`, o en la ruta que
+anterior, play/stop, saltar ya y salir. Lo guarda en `sampler.conf`, o en la ruta que
 pases. Para repetirlo, borra el fichero.
 
 Con MIDI vale cualquier botón o pad que mande Note On o Control Change. Si un
@@ -35,6 +35,8 @@ Con las teclas por defecto:
   arman el destino y el cambio entra al acabar la vuelta. Las pulsaciones se
   acumulan.
 - **Espacio**: arranca desde el principio, o para y resetea.
+- **Intro**: mientras suena, salta ya al principio del sample armado sin esperar
+  a que acabe la vuelta. Si no has armado otro, reinicia el que suena.
 - **q** o **Ctrl-C**: salir.
 
 El número de la pantalla parpadea mientras suena y se queda fijo al parar.

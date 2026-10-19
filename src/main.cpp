@@ -127,6 +127,7 @@ int main(int argc, char** argv) {
                 case sampler::Action::Prev:   transport.step(-1); break;
                 case sampler::Action::Next:   transport.step(+1); break;
                 case sampler::Action::Toggle: transport.toggle(); break;
+                case sampler::Action::Jump:   transport.jump(); break;
                 case sampler::Action::Quit:   g_quit.store(true); break;
             }
         }

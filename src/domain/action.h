@@ -2,6 +2,6 @@
 
 namespace sampler {
 
-enum class Action { Prev, Next, Toggle, Quit };
+enum class Action { Prev, Next, Toggle, Jump, Quit };
 
 }  // namespace sampler

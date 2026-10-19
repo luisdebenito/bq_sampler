@@ -9,7 +9,7 @@
 - [ ] Si quieres otras teclas o tiempos: `cp sampler.conf.example sampler.conf` y edítalo. Se lee desde la carpeta donde lanzas el programa, o pásalo como segundo argumento.
 - [ ] Elige la salida de audio en Ajustes del Sistema > Sonido. El programa usa la salida por defecto.
 - [ ] Si usas MIDI, conecta el controlador antes de arrancar. No se reconecta en caliente.
-- [ ] Si es la primera vez en esta máquina, el asistente te pedirá las cuatro acciones. Para repetirlo, borra `sampler.conf`.
+- [ ] Si es la primera vez en esta máquina, el asistente te pedirá las cinco acciones. Para repetirlo, borra `sampler.conf`.
 - [ ] Arranca desde una ventana de terminal: `./build/sampler ./mis_samples`.
 - [ ] Si avisa de WAV que no se pudieron cargar, revisa la lista de índices y pulsa intro para seguir o Ctrl-C para salir.
 - [ ] Pulsa espacio y confirma que suena y que el número parpadea.
@@ -25,7 +25,7 @@
 - [ ] Si quieres otras teclas o tiempos: `cp sampler.conf.example sampler.conf` y edítalo. Se lee desde la carpeta donde lanzas el programa, o pásalo como segundo argumento.
 - [ ] Elige la salida de audio por defecto del sistema. Si no suena o hay cortes, fuerza el backend: `SAMPLER_AUDIO_BACKEND=alsa ./build/sampler ./mis_samples` (también vale `pulseaudio` o `jack`).
 - [ ] Si usas MIDI, conecta el controlador antes de arrancar. No se reconecta en caliente.
-- [ ] Si es la primera vez en esta máquina, el asistente te pedirá las cuatro acciones. Para repetirlo, borra `sampler.conf`.
+- [ ] Si es la primera vez en esta máquina, el asistente te pedirá las cinco acciones. Para repetirlo, borra `sampler.conf`.
 - [ ] Arranca desde una ventana de terminal: `./build/sampler ./mis_samples`.
 - [ ] Si avisa de WAV que no se pudieron cargar, revisa la lista de índices y pulsa intro para seguir o Ctrl-C para salir.
 - [ ] Pulsa espacio y confirma que suena y que el número parpadea.

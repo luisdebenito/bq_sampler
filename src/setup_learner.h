@@ -10,7 +10,8 @@ namespace sampler {
 
 enum class LearnResult { Accepted, Duplicate, Unsupported, Ignored };
 
-constexpr Action kLearnOrder[] = {Action::Next, Action::Prev, Action::Toggle, Action::Quit};
+constexpr Action kLearnOrder[] = {Action::Next, Action::Prev, Action::Toggle, Action::Jump,
+                                  Action::Quit};
 
 class SetupLearner {
 public:

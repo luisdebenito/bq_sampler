@@ -22,6 +22,7 @@ const char* actionLabel(Action action) {
         case Action::Next:   return "SIGUIENTE";
         case Action::Prev:   return "ANTERIOR";
         case Action::Toggle: return "PLAY/STOP";
+        case Action::Jump:   return "SALTAR YA";
         case Action::Quit:   return "SALIR";
     }
     return "";

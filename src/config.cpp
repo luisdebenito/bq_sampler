@@ -32,6 +32,7 @@ constexpr ActionName kActionNames[] = {
     {Action::Prev, "prev"},
     {Action::Next, "next"},
     {Action::Toggle, "toggle"},
+    {Action::Jump, "jump"},
     {Action::Quit, "quit"},
 };
 
@@ -143,6 +144,7 @@ Config defaultConfig() {
     keyNameToBytes("left", b);   c.keys[Action::Prev] = b;
     keyNameToBytes("right", b);  c.keys[Action::Next] = b;
     keyNameToBytes("space", b);  c.keys[Action::Toggle] = b;
+    keyNameToBytes("enter", b);  c.keys[Action::Jump] = b;
     keyNameToBytes("q", b);      c.keys[Action::Quit] = b;
     return c;
 }
